@@ -27,15 +27,22 @@ pipeline{
         stage("Terraform apply"){
             steps{
                 input message: 'Apply changes from plan?'
-                sh 'terraform apply tfplan'
+                // sh 'terraform apply tfplan'
+                //sh 'TF_LOG=INFO terraform apply -auto-approve tfplan' //detailed logs in Jenkins output
+                //sh 'terraform apply -auto-approve tfplan | tee apply.log' //tee or force output flush, Archive Terraform Logs
+                //sh(script: 'terraform apply -auto-approve tfplan', returnStdout: true) // force output flush
+
+
+                sh 'terraform apply -auto-approve tfplan'
+
             }
         }
 
-        // stage("Terraform destroy"){
-        //     steps{
-        //         sh 'terraform destroy --auto-approve'
-        //     }
-        // }
+        stage("Terraform destroy"){
+            steps{
+                sh 'terraform destroy --auto-approve'
+            }
+        }
 
     }
 
