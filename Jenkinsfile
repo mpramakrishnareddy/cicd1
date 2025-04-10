@@ -21,12 +21,13 @@ pipeline{
         }
         stage("Terraform plan"){
             steps{
-                sh 'terraform plan'
+                sh 'terraform plan -out=tfplan'
             }
         }
         stage("Terraform apply"){
             steps{
-                sh 'terraform apply'
+                input message: 'Apply changes from plan?'
+                sh 'terraform apply tfplan'
             }
         }
 
